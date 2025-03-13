@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup Form</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container-fluid bg-secondary">
+      <div
+        class="row justify-content-center min-vh-100 align-items-center py-5"
+      >
+        <div class="col-md-6 col-lg-5">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h2 class="card-title text-center mb-4">Create an account</h2>
+              <p class="text-center text-muted mb-4">Enter your information</p>
+
+              <form id="signupForm">
+                <div class="row mb-3">
+                  <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="FName" class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="FName"
+                      placeholder="John"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="LName" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="LName"
+                      placeholder="Doe"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="UName" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="UName"
+                    placeholder="johndoe"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="pass" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="pass"
+                    placeholder="Create a password"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="cPass" class="form-label">Confirm Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="cPass"
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+
+                <div class="alert alert-danger mt-3 d-none" id="passwordAlert">
+                  Passwords do not match!
+                </div>
+
+                <div class="alert alert-success mt-3 d-none" id="successAlert">
+                  Registration Successful! Redirecting to login...
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                  <button type="button" id="btnSignUp" class="btn btn-primary">
+                    Create Account
+                  </button>
+                </div>
+
+                <div class="text-center mt-4">
+                  <span class="text-muted">Already have an account?</span>
+                  <a href="index.html" class="text-decoration-none ms-1"
+                    >Log in</a
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Register functionality
+      function registerUser() {
+        const FName = document.getElementById("FName").value;
+        const LName = document.getElementById("LName").value;
+        const UName = document.getElementById("UName").value;
+        const pass = document.getElementById("pass").value;
+        const cPass = document.getElementById("cPass").value;
+        const passwordAlert = document.getElementById("passwordAlert");
+        const successAlert = document.getElementById("successAlert");
+
+        if (pass !== cPass) {
+          passwordAlert.classList.remove("d-none");
+          setTimeout(() => {
+            passwordAlert.classList.add("d-none");
+          }, 3000);
+          return;
+        }
+
+        // Get existing users or initialize empty array
+        const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
+        // Create new user object
+        const user = {
+          firsName: FName, // Keeping the original typo for compatibility
+          lastName: LName,
+          userName: UName,
+          pass: pass,
+        };
+
+        // Add user to array and save to localStorage
+        existingUsers.push(user);
+        localStorage.setItem("users", JSON.stringify(existingUsers));
+
+        // Show success message
+        successAlert.classList.remove("d-none");
+
+        // Disable the button
+        document.getElementById("btnSignUp").disabled = true;
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      }
+
+      document
+        .getElementById("btnSignUp")
+        .addEventListener("click", registerUser);
+    </script>
+  </body>
+</html>
